@@ -16,6 +16,7 @@ class SignIn:
     def signin(self, user: User):
         self.email.enter_text(user.email)
         self.password.enter_text(user.password())
+        self.signin_button.click_element()
 
     def signin_link(self): # пока не получается реализовать открытие одной ссылки, возвращение назад и открытие следующей ссылки
         self.forgot_password_link.click_link()
