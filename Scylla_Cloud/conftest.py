@@ -2,6 +2,7 @@ import pytest
 import random
 import string
 import datetime
+
 from Scylla_Cloud.browser import Browser
 
 class User: #отвечает за создание полей и генерацию пароля
@@ -11,6 +12,7 @@ class User: #отвечает за создание полей и генерац
         self.email = email
         self.phone = phone
         self._password = ""
+        self._invalid_password = ""
         self.company = company
         self.country = country
 
@@ -31,6 +33,15 @@ class User: #отвечает за создание полей и генерац
         self._password = self.generate_password(count_special_chars=1, count_letters=5, count_numbers=2)
         return self._password
 
+    def invalid_password(self):
+        """ 8 characters minimum
+            Zero special character
+            One letter
+            One number"""
+        self._invalid_password = self.generate_password(count_special_chars=0, count_letters=5, count_numbers=3)
+        return self._invalid_password
+
+
 @pytest.fixture(scope="session")#создает уникальный email для каждой сессии
 def id_test():
     return datetime.datetime.now().strftime("%Y%m%d_%H%M%S")#возвращает сегодняшнюю дату в дополнение к указанному email для его уникальности
@@ -46,4 +57,11 @@ def user_test(id_test):
     company="Step It",
     country="Russia",
     phone="+79331234455")
+
+
+
+
+
+
+
 

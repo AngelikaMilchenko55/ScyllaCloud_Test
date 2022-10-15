@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver import Keys #модуль для имитации нажатия на клавиатуре кнопок типа enter
-from Scylla_Cloud.pages.signUp.locators import is_checked_locator
+from Scylla_Cloud.pages.signUp.locators import is_checked_locator, invalid_password_locator
 
 class Element:#базовый элемент
     def __init__(self, driver, locator):
@@ -22,6 +22,14 @@ class InputElement(Element):
 
     def key_code(self):
         return self.element.send_keys(Keys.ENTER)#имитация нажатие на enter на клавиатуре
+
+    def presence_error_message(self):#проверка наличия сообщения об ошибке при вводе некоректных данных
+        if self.driver.find_element(invalid_password_locator[0], invalid_password_locator[1]):
+            is_empty_element = True
+            print(is_empty_element)
+        else:
+            is_empty_element = False
+            print(is_empty_element)
 
 class CheckBoxElement(Element):#проверяем в каком состоянии находится элемент(стоит галочка или нет)
     is_checked = False #указываем, что изначально пока галочки нет у нас передается False
@@ -47,3 +55,8 @@ class ButtonElement(Element):
 
     def key_code(self):
         return self.element.send_keys(Keys.ENTER)
+
+class LinkElement(Element):
+
+    def click_link(self):
+        self.click_element()

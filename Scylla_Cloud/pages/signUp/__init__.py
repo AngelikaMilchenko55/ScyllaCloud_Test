@@ -3,7 +3,7 @@ from selenium import webdriver
 from Scylla_Cloud.pages.signUp import locators
 from Scylla_Cloud.browser import Browser
 from Scylla_Cloud.conftest import User
-from Scylla_Cloud.pages.signUp.element import Element, InputElement, CheckBoxElement, \
+from Scylla_Cloud.pages.signUp.element import Element, InputElement, CheckBoxElement, LinkElement, \
     ButtonElement  # указываем какие элементы взяли из файла element
 
 
@@ -21,6 +21,8 @@ class SignUp():  # класс описывает саму страницу
         self.agreement_check_box = CheckBoxElement(driver=browser.get_driver(),
                                                    locator=locators.agreement_check_box_locator)
         self.signup_button = ButtonElement(driver=browser.get_driver(), locator=locators.signup_button_locator)
+        self.signin_link = LinkElement(driver=browser.get_driver(), locator=locators.signin_link_locator)
+
 
     def signup(self, user: User):  # метод для регистрации пользователя, с данными из conftest
         self.first_name.enter_text(user.first_name)
@@ -33,5 +35,26 @@ class SignUp():  # класс описывает саму страницу
         self.phone.enter_text(user.phone)
         self.agreement_check_box.click_element()
         print(self.agreement_check_box.state())
-    # time.sleep(2)
-    # self.signup_button.click_element()
+        time.sleep(2)
+        self.signup_button.click_element()
+
+    def signup_link(self):#метод для проверки перехода по ссылке
+        self.signin_link.click_link()
+
+    def signup_invalid_data(self, user: User):
+        self.first_name.enter_text(user.first_name)
+        self.last_name.enter_text(user.last_name)
+        self.email.enter_text(user.email)
+        self.password.enter_text(user.invalid_password())
+        self.company.enter_text(user.company)
+        self.country.enter_text(user.country)
+        self.country.key_code()
+        self.phone.enter_text(user.phone)
+        self.agreement_check_box.click_element()
+        print(self.agreement_check_box.state())
+        time.sleep(2)
+        print(self.password.presence_error_message())
+
+
+
+
