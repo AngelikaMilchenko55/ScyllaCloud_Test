@@ -1,6 +1,7 @@
 import string
 from Scylla_Cloud import conftest
 import pytest
+import csv
 from pages.signUp import SignUp
 from pages.signIn import SignIn
 from browser import Browser
@@ -16,8 +17,13 @@ class TestSignUpPage:
         browser.driver.implicitly_wait(5)
         page = SignUp(browser)
         page.signup(user=user_test)
-        print("email:", page.email.get_text(), "пароль:",page.password.get_text())
-        time.sleep(2)
+        # print("email:", page.email.get_text(), "пароль:",page.password.get_text())
+        # time.sleep(2)
+        with open('users.csv', 'a', newline='') as csvfile:
+            user_data= ['email', 'password']
+            writer = csv.DictWriter(csvfile, fieldnames=user_data)
+            writer.writeheader()
+            writer.writerow({'email': page.email.get_text(), 'password': page.password.get_text()})
 
     def test_signup_link(self, browser):
         browser.go_to_site(SignUp.path)
